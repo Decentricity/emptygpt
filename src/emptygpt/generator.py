@@ -563,6 +563,27 @@ def load_generator(seed: Union[int, None] = None) -> EmptyGPTGenerator:
     rng = random.Random(seed)
     return EmptyGPTGenerator(grammar=grammar, rng=rng)
 
+def generate(*, seed=None, paragraphs=None) -> str:
+    """
+    Public entrypoint used by emptygpt.api and (via __init__) the Python API.
+
+    - seed: deterministic output
+    - paragraphs: force exact paragraph count (int)
+    """
+    gen = load_generator(seed=seed)
+
+    if paragraphs is not None:
+        try:
+            n = int(paragraphs)
+        except (TypeError, ValueError):
+            n = None
+
+        if n is not None and n > 0:
+            gen.grammar.setdefault("config", {})
+            gen.grammar["config"]["min_paragraphs"] = n
+            gen.grammar["config"]["max_paragraphs"] = n
+
+    return gen.generate()
 
 if __name__ == "__main__":
     gen = load_generator(seed=42)

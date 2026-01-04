@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "emptygpt"
-version = "0.1.2"
+version = "0.1.3"
 description = "Generate EmptyGPT-style jargon paragraphs."
 readme = "README.md"
 requires-python = ">=3.9"
